@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPERIOR TRANSFER</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>SUPERIOR TRANSFER</h1>
+        <p>Private File Transfer</p>
+    </header>
+
+    <main class="container">
+
+        <section class="card">
+            <h2>Save Folder</h2>
+            <p id="folderStatus">No folder selected</p>
+
+            <button id="createFolderBtn">
+                Create / Select Save Folder
+            </button>
+        </section>
+
+        <section class="card">
+            <h2>Upload Files</h2>
+
+            <input type="file" id="fileInput" multiple>
+
+            <button id="saveFilesBtn">
+                Save Files to Folder
+            </button>
+        </section>
+
+        <section class="card">
+            <h2>Selected Files</h2>
+            <ul id="fileList">
+                <li>No files selected</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Download</h2>
+            <button id="downloadBtn">
+                Download Selected Files
+            </button>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>SUPERIOR TRANSFER © 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
