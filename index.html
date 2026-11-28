@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#170d29">
+  <title>SUPERIOR TRANSFER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="navbar">
+      <div class="brand"><span class="brand-menu">☰</span><span>All Systems</span></div>
+      <div class="nav-links">
+        <button class="nav-btn active" data-page="home">HOME</button>
+        <button class="nav-btn" data-page="team">TEAM</button>
+        <button class="nav-btn" data-page="profile">PROFILE</button>
+      </div>
+    </nav>
+
+    <main id="homePage" class="page-panel">
+      <div class="container">
+        <section class="upload-section" id="dropArea">
+          <div class="upload-icon">⇧</div>
+          <label class="browse-btn" for="fileInput">Select files to send</label>
+          <input type="file" id="fileInput">
+          <p class="drag-text">Or drag a file here</p>
+          <div class="file-name" id="fileName">No file selected</div>
+          <div class="limit">No app-set file size limit · limited by your browser and device</div>
+        </section>
+
+        <section class="info-section">
+          <h1>Simple, private file sharing</h1>
+          <p class="description">Files are encrypted in your browser with AES-GCM before you save or share them. No file is uploaded to this GitHub Pages website.</p>
+          <button class="primary-btn" id="sendBtn" disabled>ENCRYPT & PREPARE SHARE ↗</button>
+          <div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
+          <p class="status" id="progressText" role="status"></p>
+          <div class="result" id="result" hidden>
+            <h3>✓ ENCRYPTED FILE READY</h3>
+            <p class="result-note">Your file is encrypted. Use SHARE ENCRYPTED FILE to send the encrypted file together with its key note to the recipient.</p>
+            <div class="action-row">
+              <button class="copy-btn" id="saveEncryptedBtn">SAVE / CREATE FOLDER</button>
+              <button class="copy-btn secondary-btn" id="shareEncryptedBtn">SHARE ENCRYPTED FILE</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="archive">
+        <div class="archive-heading"><h2>LOCAL TRANSFER HISTORY</h2><button type="button" id="clearHistoryBtn" class="history-clear-btn">CLEAR ALL</button></div>
+        <div id="transferHistory" class="empty-state">Your recent local activity will appear here.</div>
+      </section>
+
+    </main>
+
+    <main id="profilePage" class="profile-page page-panel" hidden>
+      <section class="profile-card">
+        <h1>Profile</h1>
+        <p class="profile-description">Your local profile and save preferences</p>
+        <div class="profile-menu">
+          <label class="profile-menu-item">
+            <span class="profile-menu-label">DISPLAY NAME</span>
+            <input id="displayName" class="field compact-field" maxlength="30" placeholder="Enter a display name">
+          </label>
+          <div class="profile-menu-item">
+            <span class="profile-menu-label">SAVE DIRECTORY</span>
+            <strong id="directoryStatus">No folder selected</strong>
+            <p class="muted">Choose a folder once. When supported, Superior Transfer can remember this folder in this browser.</p>
+            <button class="copy-btn" id="chooseDirectoryBtn">CHOOSE SAVE DIRECTORY</button>
+            <button class="text-btn" id="clearDirectoryBtn">Forget selected directory</button>
+          </div>
+          <div class="profile-menu-item">
+            <span class="profile-menu-label">FILE SETTINGS</span>
+            <strong>No fixed file size limit</strong>
+            <span class="muted">Files are encrypted locally. Very large files may be limited by available device memory and browser capabilities.</span>
+          </div>
+        </div>
+        <p class="warning-note">This is a static, browser-only version. Your profile and settings stay in this browser; they are not an online account.</p>
+      </section>
+    </main>
+
+    <main id="teamPage" class="team-page page-panel" hidden>
+      <section class="team-heading">
+        <h1>Team file sharing</h1>
+        <p>Create local team workspaces and prepare encrypted files for your team. GitHub Pages cannot synchronize groups or files between different users without a separate backend.</p>
+      </section>
+      <div class="team-grid">
+        <section class="team-card">
+          <h2>Create a group</h2>
+          <p>Create a group workspace saved in this browser.</p>
+          <input class="field" id="createName" placeholder="Enter group name" maxlength="40">
+          <button class="primary-btn" id="createGroupBtn">CREATE GROUP +</button>
+          <div class="team-status" id="createStatus" role="status"></div>
+        </section>
+        <section class="team-card">
+          <h2>Join a group</h2>
+          <p>Open a group previously created in this browser using its local invite code.</p>
+          <input class="field" id="joinName" placeholder="Enter group name" maxlength="40">
+          <input class="field" id="joinCode" type="password" placeholder="Enter invite code">
+          <button class="primary-btn" id="joinGroupBtn">OPEN GROUP →</button>
+          <div class="team-status" id="joinStatus" role="status"></div>
+        </section>
+      </div>
+      <section class="group-list">
+        <h2>MY LOCAL GROUPS</h2>
+        <div id="groupsList" class="empty-state">No local groups yet.</div>
+      </section>
+      <section class="group-room" id="groupRoom" hidden>
+        <h2 id="roomName">Group</h2>
+        <p>Local workspace · This group is visible only in this browser profile.</p>
+        <div class="room-section">
+          <h3>SHARE A FILE WITH THIS GROUP</h3>
+          <input class="field" type="file" id="teamFile">
+          <button class="primary-btn" id="teamPrepareBtn">ENCRYPT & PREPARE FILE ↗</button>
+          <p class="team-status" id="teamUploadStatus" role="status"></p>
+        </div>
+        <div class="room-section">
+          <h3>GROUP FILES</h3>
+          <div id="teamFiles" class="empty-state">No files prepared yet.</div>
+        </div>
+        <button class="back-btn" id="closeGroupBtn">← BACK TO GROUPS</button>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="saveDialog" class="save-dialog">
+    <form method="dialog" class="dialog-card">
+      <h2>Save your file</h2>
+      <p>Choose where to save this encrypted file.</p>
+      <button type="button" class="primary-btn" id="saveToDirectoryBtn">SAVE IN SELECTED DIRECTORY</button>
+      <button type="button" class="copy-btn secondary-btn" id="createFolderSaveBtn">CREATE A NEW FOLDER & SAVE</button>
+      <button type="button" class="text-btn" id="browserDownloadBtn">Use normal browser download</button>
+      <button type="submit" class="text-btn close-dialog">CANCEL</button>
+      <p id="saveDialogStatus" class="status" role="status"></p>
+    </form>
+  </dialog>
+
+  <dialog id="shareDialog" class="save-dialog share-dialog">
+    <div class="dialog-card share-card">
+      <button type="button" class="share-close" id="closeShareDialog" aria-label="Close">×</button>
+      <h2>Share your file</h2>
+      <p id="shareFileName" class="share-file-name">Encrypted file ready</p>
+      <div class="share-link-row">
+        <input id="shareAppLink" class="field compact-field" type="text" readonly aria-label="Website link">
+        <button type="button" id="copyShareLinkBtn" class="copy-link-btn">COPY LINK</button>
+      </div>
+      <p class="share-note">This link opens the Superior Transfer website only. It does not contain your file. To send the actual file, use Share below.</p>
+      <div class="share-options">
+        <button type="button" id="nativeShareBtn" class="share-option-btn">↗ &nbsp; Share file</button>
+        <button type="button" id="showQrBtn" class="share-option-btn">▦ &nbsp; Show QR code</button>
+      </div>
+      <div id="qrPanel" class="qr-panel" hidden>
+        <img id="shareQrImage" alt="QR code for the Superior Transfer website">
+        <p>Scan to open the website. The encrypted file and key still need to be shared separately.</p>
+      </div>
+      <p id="shareDialogStatus" class="status" role="status"></p>
+    </div>
+  </dialog>
+</body>
+</html>
