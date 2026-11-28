@@ -142,14 +142,23 @@
   <dialog id="shareDialog" class="save-dialog share-dialog">
     <div class="dialog-card share-card">
       <button type="button" class="share-close" id="closeShareDialog" aria-label="Close">×</button>
-      <h2>Share your file</h2>
+      <h1 class="share-hero-title">Your file is ready to share!</h1>
       <p id="shareFileName" class="share-file-name">File ready</p>
-      <p class="share-note">Share the original file as an attachment. If your browser does not support file sharing, download the file and attach it manually.</p>
-      <div class="share-options">
-        <button type="button" id="copyShareLinkBtn" class="share-option-btn">↓ &nbsp; DOWNLOAD FILE</button>
-        <button type="button" id="nativeShareBtn" class="share-option-btn">↗ &nbsp; SHARE FILE</button>
+      <h2 class="share-copy-heading">Copy the link to share your file</h2>
+      <div class="share-link-row">
+        <input id="shareLinkInput" class="field share-link-input" type="text" readonly aria-label="Website link">
+        <button type="button" id="copyShareLinkBtn" class="copy-link-btn">▢ &nbsp; Copy link</button>
       </div>
-      <p id="shareDialogStatus" class="status" role="status"></p>
+      <div class="share-options">
+        <button type="button" id="nativeShareBtn" class="share-option-btn">↗ &nbsp; Share</button>
+        <button type="button" id="showQrBtn" class="share-option-btn">▦ &nbsp; Show QR code</button>
+      </div>
+      <div id="qrPanel" class="qr-panel" hidden>
+        <img id="shareQrImage" alt="QR code for the Superior Transfer website">
+        <p>Scan to open this website. The file must still be sent separately.</p>
+      </div>
+      <p class="share-note">The copied link opens this website; it does not contain your file. Use <strong>Share</strong> to send the file as an attachment, or attach the downloaded file manually.</p>
+      <p id="shareDialogStatus" class="status" role="status" aria-live="polite"></p>
     </div>
   </dialog>
 </body>
