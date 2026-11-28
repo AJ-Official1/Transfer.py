@@ -118,10 +118,20 @@ async function resolveShareFile() {
   }
   throw new Error("No file selected.");
 }
+function getWebsiteShareUrl() {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  return url.href;
+}
 async function openShareDialog(source, filename) {
   activeShareSource = source;
   $("shareFileName").textContent = filename || "File ready";
-  $("shareDialogStatus").textContent = "Choose Share File to open your device's sharing menu. If file sharing is unavailable, download the file and attach it yourself.";
+  const websiteUrl = getWebsiteShareUrl();
+  $("shareLinkInput").value = websiteUrl;
+  $("qrPanel").hidden = true;
+  $("shareQrImage").removeAttribute("src");
+  $("shareDialogStatus").textContent = "The link opens this website. To send the actual file, use Share to send it as an attachment.";
   $("shareDialog").showModal();
 }
 async function shareSelectedFile() {
@@ -237,11 +247,28 @@ $("shareFileBtn").addEventListener("click", () => {
 });
 $("closeShareDialog").addEventListener("click", () => $("shareDialog").close());
 $("copyShareLinkBtn").addEventListener("click", async () => {
+  const link = $("shareLinkInput").value || getWebsiteShareUrl();
   try {
-    const file = await resolveShareFile();
-    triggerDownload(file, file.name);
-    setStatus("shareDialogStatus", "No online share link is available without a server. The original file has been downloaded so you can attach it to a message.");
-  } catch (error) { setStatus("shareDialogStatus", error.message); }
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      await navigator.clipboard.writeText(link);
+    } else {
+      const input = $("shareLinkInput");
+      input.focus(); input.select();
+      const copied = document.execCommand("copy");
+      input.setSelectionRange(0, 0);
+      if (!copied) throw new Error("Copy is unavailable. Select and copy the website address manually.");
+    }
+    setStatus("shareDialogStatus", "Website link copied. Remember to send the file separately using Share.");
+  } catch (error) { setStatus("shareDialogStatus", error.message || "Could not copy the link. Select the address and copy it manually."); }
+});
+$("showQrBtn").addEventListener("click", () => {
+  const panel = $("qrPanel");
+  if (!panel.hidden) { panel.hidden = true; return; }
+  const link = getWebsiteShareUrl();
+  // The QR contains only the public website address, never the file itself.
+  $("shareQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(link)}`;
+  panel.hidden = false;
+  setStatus("shareDialogStatus", "This QR code opens the website only. Send the file separately as an attachment.");
 });
 $("nativeShareBtn").addEventListener("click", async () => {
   try { await shareSelectedFile(); }
